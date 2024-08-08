@@ -13,7 +13,6 @@ from .entity import OpenMowerMqttEntity
 
 _LOGGER = logging.getLogger(__name__)
 
-AVAILABILITY_TOPIC = "actions/json"
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -45,18 +44,20 @@ async def async_setup_entry(
 
 class OpenMowerMqttButtonEntity(OpenMowerMqttEntity, ButtonEntity):
     def __init__(self, name, prefix, availability_action_id):
-        super().__init__(name, prefix, "actions/json", availability_action_id)
+        self._prefix = prefix
+        super().__init__(name, prefix, f"{prefix}/actions/json", availability_action_id)
         self._availability_action_id = availability_action_id
         self._available = False
 
     async def async_added_to_hass(self) -> None:
-        _LOGGER.debug(f"Subscribing to {AVAILABILITY_TOPIC} for availability")
+        availability_topic = f"{self._prefix}/actions/json"
+        _LOGGER.debug(f"Subscribing to {availability_topic} for availability")
         await mqtt.async_subscribe(
-            self.hass, AVAILABILITY_TOPIC, self._availability_callback, 1
+            self.hass, availability_topic, self._availability_callback, 1
         )
 
     def _availability_callback(self, msg: mqtt.ReceiveMessage) -> None:
-        _LOGGER.debug(f"Received MQTT message on {AVAILABILITY_TOPIC}: {msg.payload}")
+        _LOGGER.debug(f"Received MQTT message on {self._prefix}/actions/json: {msg.payload}")
         try:
             payload = json.loads(msg.payload)
             _LOGGER.debug(f"Parsed payload: {payload}")
@@ -81,7 +82,7 @@ class OpenMowerMqttButtonEntity(OpenMowerMqttEntity, ButtonEntity):
     async def async_press(self) -> None:
         await mqtt.async_publish(
             self.hass,
-            self._mqtt_topic_prefix + "action",
+            f"{self._prefix}/action",
             self._availability_action_id,
         )
 
