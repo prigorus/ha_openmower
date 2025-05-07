@@ -99,7 +99,9 @@ class OpenMowerEntity(LawnMowerEntity):
             self._attr_activity = LawnMowerActivity.ERROR
         elif value_json["is_charging"] == 1:
             self._attr_activity = LawnMowerActivity.DOCKED
-        elif value_json["current_state"] in ["MOWING", "DOCKING", "UNDOCKING"]:
+        elif value_json["current_state"] in ["DOCKING"]:
+            self._attr_activity = LawnMowerActivity.RETURNING
+        elif value_json["current_state"] in ["MOWING", "UNDOCKING"]:
             self._attr_activity = LawnMowerActivity.MOWING
         elif value_json["current_state"] in ["PAUSED"]:
             self._attr_activity = LawnMowerActivity.PAUSED
