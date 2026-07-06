@@ -39,6 +39,16 @@ async def async_setup_entry(
             OpenMowerExitRecordingModeButton("Exit Recording Mode", prefix),
             OpenMowerFinishDiscardButton("Discard Recording", prefix),
             OpenMowerRecordDockButton("Record Dock", prefix),
+            OpenMowerStartMowingButton("Start Mowing", prefix),
+            OpenMowerPauseMowingButton("Pause Mowing", prefix),
+            OpenMowerContinueMowingButton("Continue Mowing", prefix),
+            OpenMowerAbortMowingButton("Stop Mowing", prefix),
+            OpenMowerAbortDockingButton("Stop Docking", prefix),
+            OpenMowerAutoPointCollectingEnableButton("Enable Automatic Point Collecting", prefix),
+            OpenMowerAutoPointCollectingDisableButton("Disable Automatic Point Collecting", prefix),
+            OpenMowerCollectPointButton("Collect Point", prefix),
+            OpenMowerStartManualMowingButton("Start Manual Mowing", prefix),
+            OpenMowerStopManualMowingButton("Stop Manual Mowing", prefix),
         ]
     )
 
@@ -163,3 +173,88 @@ class OpenMowerRecordDockButton(OpenMowerMqttButtonEntity):
 
     def __init__(self, name, prefix):
         super().__init__(name, prefix, "mower_logic:area_recording/record_dock")
+
+class OpenMowerStartMowingButton(OpenMowerMqttButtonEntity):
+    _attr_icon = "mdi:play-circle-outline"
+
+    def __init__(self, name, prefix):
+        super().__init__(name, prefix, "mower_logic:idle/start_mowing")
+
+
+class OpenMowerPauseMowingButton(OpenMowerMqttButtonEntity):
+    _attr_icon = "mdi:pause-circle-outline"
+
+    def __init__(self, name, prefix):
+        super().__init__(name, prefix, "mower_logic:mowing/pause")
+
+
+class OpenMowerContinueMowingButton(OpenMowerMqttButtonEntity):
+    _attr_icon = "mdi:play-circle-outline"
+
+    def __init__(self, name, prefix):
+        super().__init__(name, prefix, "mower_logic:mowing/continue")
+
+
+class OpenMowerAbortMowingButton(OpenMowerMqttButtonEntity):
+    _attr_icon = "mdi:stop-circle-outline"
+
+    def __init__(self, name, prefix):
+        super().__init__(name, prefix, "mower_logic:mowing/abort_mowing")
+
+
+class OpenMowerAbortDockingButton(OpenMowerMqttButtonEntity):
+    _attr_icon = "mdi:stop-circle-outline"
+
+    def __init__(self, name, prefix):
+        super().__init__(name, prefix, "mower_logic:docking/abort_docking")
+
+
+class OpenMowerAutoPointCollectingEnableButton(OpenMowerMqttButtonEntity):
+    _attr_icon = "mdi:map-marker-plus-outline"
+
+    def __init__(self, name, prefix):
+        super().__init__(
+            name,
+            prefix,
+            "mower_logic:area_recording/auto_point_collecting_enable",
+        )
+
+
+class OpenMowerAutoPointCollectingDisableButton(OpenMowerMqttButtonEntity):
+    _attr_icon = "mdi:map-marker-off-outline"
+
+    def __init__(self, name, prefix):
+        super().__init__(
+            name,
+            prefix,
+            "mower_logic:area_recording/auto_point_collecting_disable",
+        )
+
+
+class OpenMowerCollectPointButton(OpenMowerMqttButtonEntity):
+    _attr_icon = "mdi:map-marker-plus"
+
+    def __init__(self, name, prefix):
+        super().__init__(name, prefix, "mower_logic:area_recording/collect_point")
+
+
+class OpenMowerStartManualMowingButton(OpenMowerMqttButtonEntity):
+    _attr_icon = "mdi:play-box-outline"
+
+    def __init__(self, name, prefix):
+        super().__init__(
+            name,
+            prefix,
+            "mower_logic:area_recording/start_manual_mowing",
+        )
+
+
+class OpenMowerStopManualMowingButton(OpenMowerMqttButtonEntity):
+    _attr_icon = "mdi:stop-circle-outline"
+
+    def __init__(self, name, prefix):
+        super().__init__(
+            name,
+            prefix,
+            "mower_logic:area_recording/stop_manual_mowing",
+        )
